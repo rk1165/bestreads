@@ -1,85 +1,86 @@
 {% extends "layout.html" %}
 
 {% block title %}
-{{ book.title }}
+    {{ book.title }}
 {% endblock %}
 
 {% block logout %}
-<li class="nav-item active">
-  <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-</li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+    </li>
 {% endblock %}
 
 {% block mybooks %}
-<li class="nav-item active">
-  <a class="nav-link" href="#">My Books</a>
-</li>
+    <li class="nav-item active">
+        <a class="nav-link" href="#">My Books</a>
+    </li>
 {% endblock %}
 
 {% block body %}
-<div class="row justify-content-center">
-  <h3 class="text-justify mt-5">
-    Here are the details for your book
-  </h3>
-</div>
+    <div class="row justify-content-center">
+        <h3 class="text-justify mt-5">
+            Here are the details for your book
+        </h3>
+    </div>
 
 
-  <div class="mt-2 row">
+    <div class="mt-2 row">
 
-    <div class="col-sm">
-      <div class="card bg-light mb-3" style="width: 18rem;">
-        <div class="card-body">
-          <h1 class="card-title text-center">
+        <div class="col-sm">
+            <div class="card bg-light mb-3" style="width: 18rem;">
+                <div class="card-body">
+                    <h1 class="card-title text-center">
             <span class="badge badge-dark">{{ book.title }}
             </span>
-          </h1>
-          <h3 class="card-subtitle mb-2 text-right">
+                    </h1>
+                    <h3 class="card-subtitle mb-2 text-right">
             <span class="badge badge-primary">{{ book.author }}
             </span>
-          </h3>
-          <h5 class="card-text text-center">
-            <span class="badge badge-info">Year published: {{ book.year}}
+                    </h3>
+                    <h5 class="card-text text-center">
+            <span class="badge badge-info">Year published: {{ book.year }}
             </span>
-          </h5>
-          <h5 class="card-text text-center">
+                    </h5>
+                    <h5 class="card-text text-center">
             <span class="badge badge-info">Goodreads Rating: {{ average_rating }}
             </span>
-          </h5>
-          <h5 class="card-text text-center">
+                    </h5>
+                    <h5 class="card-text text-center">
             <span class="badge badge-info"> Rating count: {{ ratings_count }}
             </span>
-          </h5>
+                    </h5>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="col-sm">
+            <form action="{{ url_for('review', isbn=book.isbn) }}" method="post">
+                <div class="form-group">
+                    <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3"
+                              placeholder="Review"></textarea>
+                </div>
+                <div class="row justify-content-center">
+                    <button class="btn btn-sm btn-primary btn-block col-3" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
-    <div class="col-sm">
-      <form action="{{ url_for('review', isbn=book.isbn)}}" method="post">
-        <div class="form-group">
-        <textarea name="review" class="form-control" id="exampleFormControlTextarea1" rows="3" placeholder="Review"></textarea>
-        </div>
+    {% if session['messages'] %}
         <div class="row justify-content-center">
-          <button class="btn btn-sm btn-primary btn-block col-3" type="submit">Submit</button>
+            <div class="alert alert-danger" role="alert">
+                {{ session['messages'] }}
+            </div>
         </div>
-      </form>
-    </div>
+    {% endif %}
 
-</div>
-
-{% if session['messages'] %}
-<div class="row justify-content-center">
-  <div class="alert alert-danger" role="alert">
-    {{ session['messages']}}
-  </div>
-</div>
-{% endif %}
-
-<h3>Reviews</h3>
-{% if reviews %}
-{% for review in reviews %}
-<p>{{ review.review }}</p>
-{% endfor %}
-{% endif %}
+    <h3>Reviews</h3>
+    {% if reviews %}
+        {% for review in reviews %}
+            <p>{{ review.review }}</p>
+        {% endfor %}
+    {% endif %}
 
 
 

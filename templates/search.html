@@ -1,102 +1,105 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Search Results
+    Search Results
 {% endblock %}
 
 {% block logout %}
-<li class="nav-item active">
-  <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-</li>
+    <li class="nav-item active">
+        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+    </li>
 {% endblock %}
 
 {% block mybooks %}
-<li class="nav-item active">
-  <a class="nav-link" href="#">My Books</a>
-</li>
+    <li class="nav-item active">
+        <a class="nav-link" href="#">My Books</a>
+    </li>
 {% endblock %}
 
 {% block body %}
 
-<!-- To show you are successfully signed in for a sec and then fade it -->
-<!-- <div class="row justify-content-center">
+    <!-- To show you are successfully signed in for a sec and then fade it -->
+    <!-- <div class="row justify-content-center">
   <div class="alert alert-success alert-dismissible fade show" role="alert">
     {{ message }}
   </div>
 </div> -->
 
-<div class="row justify-content-center">
-  <h3 class="text-justify mt-5">
-    You can search for a book and its rating here.
-  </h3>
-</div>
-
-<!-- <div class="mt-5"> -->
-<!-- <div class="row justify-content-center"> -->
-<form action="{{ url_for('search') }}" method="post">
-  <div class="form-group">
-    <div class="row justify-content-center mt-5">
-      <div class="form-group col-3">
-
-        <input name="isbn" class="form-control mr-sm-2 col-12" type="search" placeholder="ISBN" aria-label="Search">
-      </div>
-      <div class="form-group col-3">
-
-        <input name="title" class="form-control mr-sm-2 col-12" type="search" placeholder="Title" aria-label="Search">
-      </div>
-
-      <div class="form-group col-3">
-
-        <input name="author" class="form-control mr-sm-2 col-12" type="search" placeholder="Author" aria-label="Search">
-      </div>
-
-    </div>
-    <div class="row justify-content-center mt-3">
-      <button class="btn-lg btn-outline-success my-2 my-sm-0 col-4" type="submit">Search</button>
+    <div class="row justify-content-center">
+        <h3 class="text-justify mt-5">
+            You can search for a book and its rating here.
+        </h3>
     </div>
 
-</form>
+    <!-- <div class="mt-5"> -->
+    <!-- <div class="row justify-content-center"> -->
+    <form action="{{ url_for('search') }}" method="post">
+        <div class="form-group">
+            <div class="row justify-content-center mt-5">
+                <div class="form-group col-3">
+
+                    <input name="isbn" class="form-control mr-sm-2 col-12" type="search" placeholder="ISBN"
+                           aria-label="Search">
+                </div>
+                <div class="form-group col-3">
+
+                    <input name="title" class="form-control mr-sm-2 col-12" type="search" placeholder="Title"
+                           aria-label="Search">
+                </div>
+
+                <div class="form-group col-3">
+
+                    <input name="author" class="form-control mr-sm-2 col-12" type="search" placeholder="Author"
+                           aria-label="Search">
+                </div>
+
+            </div>
+            <div class="row justify-content-center mt-3">
+                <button class="btn-lg btn-outline-success my-2 my-sm-0 col-4" type="submit">Search</button>
+            </div>
+
+    </form>
 
 
-{% if message %}
-<div class="row justify-content-center">
-  <div class="alert alert-danger mt-4 col-6" role="alert">
-    {{ message }}
-  </div>
-  {% elif success %}
-  <div class="alert alert-success mt-3" role="alert">
-    {% if count == 1 %}
-      We found {{ count }} book. Here it is.
-    {% else %}
-      We found {{ count }} books. {{ success }}
+    {% if message %}
+        <div class="row justify-content-center">
+            <div class="alert alert-danger mt-4 col-6" role="alert">
+                {{ message }}
+            </div>
+            {% elif success %}
+            <div class="alert alert-success mt-3" role="alert">
+                {% if count == 1 %}
+                    We found {{ count }} book. Here it is.
+                {% else %}
+                    We found {{ count }} books. {{ success }}
+                {% endif %}
+                <div class="ml-5 mr-5 mt-5 mb-5">
+                    <table class="table table-hover table-bordered table-light">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="col-md-1" scope="col">ISBN</th>
+                            <th class="col-md-2" scope="col">Title</th>
+                            <th class="col-md-2" scope="col">Author</th>
+                            <th class="col-md-1" scope="col">Year</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for book in books %}
+                            <tr>
+                                <th scope="row">{{ book.isbn }}</th>
+                                <td><a href="{{ url_for('get_book', isbn=book.isbn) }}">{{ book.title }}</a></td>
+                                <td>{{ book.author }}</td>
+                                <td>{{ book.year }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
     {% endif %}
-    <div class="ml-5 mr-5 mt-5 mb-5">
-      <table class="table table-hover table-bordered table-light">
-        <thead class="thead-dark">
-          <tr>
-            <th class="col-md-1" scope="col">ISBN</th>
-            <th class="col-md-2" scope="col">Title</th>
-            <th class="col-md-2" scope="col">Author</th>
-            <th class="col-md-1" scope="col">Year</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {% for book in books %}
-          <tr>
-            <th scope="row">{{ book.isbn }}</th>
-            <td><a href="{{ url_for('get_book', isbn=book.isbn)}}">{{ book.title }}</a></td>
-            <td>{{ book.author }}</td>
-            <td>{{ book.year }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-
-      </table>
-    </div>
-  </div>
-</div>
-{% endif %}
 
 
 {% endblock %}
