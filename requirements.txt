@@ -1,4 +1,6 @@
-Flask
+Flask~=1.1.2
 Flask-Session
-psycopg2
-SQLAlchemy
+mysql-connector-python
+SQLAlchemy~=1.3.23
+flask_sqlalchemy
+requests~=2.22.0

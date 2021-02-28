@@ -1,7 +1,7 @@
 import os
-import requests
 
-from flask import Flask, session, request, render_template, redirect, url_for
+import requests
+from flask import Flask, request, render_template, redirect, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -26,9 +26,9 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template("index.html")
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
-
     if request.method == "GET":
         return render_template("registration.html")
 
@@ -40,12 +40,13 @@ def register():
     # save the above valus in the database
     db.execute("INSERT INTO users (fname, lname, email, username, password) VALUES \
     (:fname, :lname, :email, :username, :password)",
-    {"fname": first_name, "lname" : last_name, "email": email, "username" :username, "password" :password})
+               {"fname": first_name, "lname": last_name, "email": email, "username": username, "password": password})
     # db.execute("INSERT INTO mapping (user_id) VALUES (:user_id)", {"user_id": })
     db.commit()
     return render_template("login.html")
 
-@app.route("/login" , methods=["GET", "POST"])
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
         return render_template("login.html")
@@ -61,6 +62,7 @@ def login():
         message = "You entered wrong credentials"
         return render_template("login.html", message=message)
 
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if request.method == "GET":
@@ -71,24 +73,26 @@ def search():
     author = request.form.get("author")
 
     if isbn == '' and title == '':
-        books = db.execute("SELECT * from books WHERE author LIKE :author", {"author": '%'+author+'%'}).fetchall()
+        books = db.execute("SELECT * from books WHERE author LIKE :author", {"author": '%' + author + '%'}).fetchall()
     elif isbn == '' and author == '':
-        books = db.execute("SELECT * from books WHERE title LIKE :title", {"title": '%'+title+'%'}).fetchall()
+        books = db.execute("SELECT * from books WHERE title LIKE :title", {"title": '%' + title + '%'}).fetchall()
     elif title == '' and author == '':
-        books = db.execute("SELECT * from books WHERE isbn LIKE :isbn", {"isbn": '%'+isbn+'%'}).fetchall()
+        books = db.execute("SELECT * from books WHERE isbn LIKE :isbn", {"isbn": '%' + isbn + '%'}).fetchall()
     elif isbn == '':
         books = db.execute("SELECT * from books WHERE \
-        title LIKE :title OR author LIKE :author", {"title": '%'+title+'%', "author": '%'+author+'%'}).fetchall()
+        title LIKE :title OR author LIKE :author",
+                           {"title": '%' + title + '%', "author": '%' + author + '%'}).fetchall()
     elif title == '':
         books = db.execute("SELECT * from books WHERE \
-        isbn LIKE :isbn OR author LIKE :author", {"isbn": '%'+isbn+'%', "author": '%'+author+'%'}).fetchall()
+        isbn LIKE :isbn OR author LIKE :author", {"isbn": '%' + isbn + '%', "author": '%' + author + '%'}).fetchall()
     elif author == '':
         books = db.execute("SELECT * from books WHERE \
-        isbn LIKE :isbn OR title LIKE :title", {"isbn": '%'+isbn+'%', "title": '%'+title+'%'}).fetchall()
+        isbn LIKE :isbn OR title LIKE :title", {"isbn": '%' + isbn + '%', "title": '%' + title + '%'}).fetchall()
     elif isbn != '' and title != '' and author != '':
         books = db.execute("SELECT * from books WHERE \
             isbn LIKE :isbn OR title LIKE :title OR author LIKE :author",
-            {"isbn": '%'+isbn+'%', "title": '%'+title+'%', "author": '%'+author+'%'}).fetchall()
+                           {"isbn": '%' + isbn + '%', "title": '%' + title + '%',
+                            "author": '%' + author + '%'}).fetchall()
     else:
         books = list()
 
@@ -99,10 +103,12 @@ def search():
     success = "Here are they:"
     return render_template("search.html", books=books, success=success, count=len(books))
 
+
 @app.route("/book/<isbn>")
 def get_book(isbn):
     # isbn = "000100039X"
-    books = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "JbJvaGJSOPbkd6SGvajpw", "isbns": isbn })
+    books = requests.get("https://www.goodreads.com/book/review_counts.json",
+                         params={"key": "JbJvaGJSOPbkd6SGvajpw", "isbns": isbn})
     books = books.json()
 
     book = db.execute("SELECT * from books WHERE isbn = :isbn", {"isbn": isbn}).fetchall()
@@ -111,9 +117,11 @@ def get_book(isbn):
 
     return render_template("book.html", average_rating=average_rating, ratings_count=ratings_count, book=book)
 
+
 @app.route("/review")
 def review():
     pass
+
 
 @app.route("/logout")
 def logout():
