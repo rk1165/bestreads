@@ -1,8 +1,10 @@
 #!/bin/bash
 
-. db.config
+rm -rf instance/
 
-db_url="${database}://${username}:${password}@${hostname}/${dbname}"
+# Loads the data in instance/books.db
+
+db_url="sqlite:///books.db"
 echo "DB URL = ${db_url}"
 
 export DATABASE_URL=${db_url}

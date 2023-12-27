@@ -8,11 +8,8 @@
 
 ### How to run the app locally?
 - run `pip install -r requirements.txt` to install the required libraries.
-- Provision the `RDS` resource using terraform script under `tf/` by running `tf apply` 
-- Copy the hostname from the output after running `tf apply` and paste it under `hostname` of `db.config` along with other details.
-- Then run `source load_data.sh` to load the data in the database.
-- Finally, run the app locally by executing `run.sh` script
-- Later delete the resources on AWS using `tf destroy` to not incur AWS cost.
+- Then run `bash load_data.sh` to load the data in the database.
+- Finally, run the app locally by executing `bash run.sh` script
 
 ### Usage
 - `127.0.0.1:5000` : opens home page

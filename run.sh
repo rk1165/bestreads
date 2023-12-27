@@ -1,10 +1,8 @@
 #!/bin/bash
 
-. db.config
-
-db_url="${database}://${username}:${password}@${hostname}/${dbname}"
+db_url="sqlite:///books.db"
 export DATABASE_URL=${db_url}
 
 export FLASK_APP=application.py
 
-flask run
+python3 -m flask run
