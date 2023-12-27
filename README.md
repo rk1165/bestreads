@@ -10,3 +10,8 @@
 - run `pip install -r requirements.txt` to install the required libraries.
 - Then run `bash load_data.sh` to load the data in the database.
 - Finally, run the app locally by executing `bash run.sh` script
+
+### Usage
+
+https://github.com/rk1165/bestreads/assets/8726141/29a2d9ca-41c0-4a41-82ef-2d48e6c25cbd
+
